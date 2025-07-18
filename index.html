@@ -1,205 +1,205 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla Curricular Ingeniería Mecánica - UTEC</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malla Curricular Ingeniería Mecánica UTEC</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f5f7fa;
       margin: 0;
-      padding: 20px;
+      background: #e8f1fb;
+      color: #333;
     }
+
     h1 {
       text-align: center;
-      color: #2c3e50;
+      padding: 20px;
+      color: #004080;
     }
+
+    .container {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 10px;
+    }
+
     .ciclo {
-      display: inline-block;
-      vertical-align: top;
-      width: 280px;
-      margin: 10px;
       background-color: #ffffff;
+      border: 2px solid #cce0ff;
       border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 10px;
       padding: 15px;
+      min-width: 250px;
+      flex-shrink: 0;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
     }
+
     .ciclo h2 {
-      font-size: 1.1rem;
-      color: #2980b9;
-      margin-bottom: 10px;
+      font-size: 1.2em;
+      color: #0059b3;
     }
+
     .curso {
-      background-color: #ecf0f1;
-      margin-bottom: 8px;
-      padding: 8px;
-      border-radius: 5px;
-      cursor: pointer;
-      position: relative;
-    }
-    .curso.aprobado {
-      background-color: #2ecc71;
-      color: white;
-      text-decoration: line-through;
-    }
-    .curso.bloqueado {
-      background-color: #bdc3c7;
-      color: #7f8c8d;
-      cursor: not-allowed;
-    }
-    .curso:hover:not(.bloqueado) {
-      background-color: #d0e6f7;
-    }
-    .tooltip {
-      visibility: hidden;
-      background-color: #34495e;
-      color: #fff;
-      text-align: center;
+      background-color: #e0f0ff;
+      border: 1px solid #99ccff;
+      border-left: 6px solid #3399ff;
+      padding: 10px;
+      margin: 8px 0;
       border-radius: 6px;
-      padding: 5px;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      margin-left: -60px;
-      opacity: 0;
-      transition: opacity 0.3s;
-      width: 120px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    .curso:hover .tooltip {
-      visibility: visible;
-      opacity: 1;
+
+    .curso:hover {
+      background-color: #d0e9ff;
+    }
+
+    .curso.aprobado {
+      background-color: #b3e6cc;
+      border-left-color: #33cc99;
+    }
+
+    .curso.bloqueado {
+      background-color: #f0f0f0;
+      border-left-color: #cccccc;
+      cursor: not-allowed;
+      color: #aaa;
+    }
+
+    .curso[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      top: -5px;
+      left: 105%;
+      background-color: #333;
+      color: #fff;
+      padding: 5px 10px;
+      font-size: 0.85em;
+      border-radius: 4px;
+      white-space: nowrap;
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
   <h1>Malla Curricular Ingeniería Mecánica - UTEC</h1>
-  <div id="contenedor"></div>
+  <div class="container" id="malla"></div>
 
   <script>
     const cursos = [
-      { ciclo: 'Ciclo 1', cursos: [
-        { id: 'prog1', nombre: 'Programación I (4 cr.)' },
-        { id: 'calc1', nombre: 'Cálculo de una Variable (4 cr.)' },
-        { id: 'quim', nombre: 'Química General + Lab. (4 cr.)' },
-        { id: 'introIng', nombre: 'Introducción a la Ingeniería Mecánica (2 cr.)' },
-        { id: 'com1', nombre: 'Lab. Comunicación I (3 cr.)' },
-        { id: 'proy1', nombre: 'Proyectos Interdisciplinarios I (3 cr.)' },
-      ]},
-      { ciclo: 'Ciclo 2', cursos: [
-        { id: 'mec1', nombre: 'Introducción a la Mecánica (4 cr.)', prerreq: ['calc1'] },
-        { id: 'prog2', nombre: 'Programación II (4 cr.)', prerreq: ['prog1'] },
-        { id: 'calcVec', nombre: 'Cálculo Vectorial (3 cr.)', prerreq: ['calc1'] },
-        { id: 'algebra', nombre: 'Álgebra Lineal (2 cr.)' },
-        { id: 'estad1', nombre: 'Estadística I (4 cr.)', prerreq: ['calc1'] },
-        { id: 'com2', nombre: 'Lab. Comunicación II (3 cr.)' },
-      ]},
-      { ciclo: 'Ciclo 3', cursos: [
-        { id: 'elecmag', nombre: 'Electricidad y Magnetismo (4 cr.)', prerreq: ['calcVec'] },
-        { id: 'termo', nombre: 'Termodinámica (4 cr.)', prerreq: ['calcVec'] },
-        { id: 'ecdiff', nombre: 'Ecuaciones Diferenciales (3 cr.)', prerreq: ['calc1'] },
-        { id: 'diseno', nombre: 'Dibujo y Diseño para Ingeniería (4 cr.)' },
-        { id: 'sociedad', nombre: 'Temas Sociedad Contemporánea (3 cr.)' },
-        { id: 'proy2', nombre: 'Proyectos Interdisciplinarios II (3 cr.)' },
-      ]},
-      { ciclo: 'Ciclo 4', cursos: [
-        { id: 'metnum', nombre: 'Métodos Numéricos (3 cr.)', prerreq: ['ecdiff', 'algebra'] },
-        { id: 'dinamica', nombre: 'Dinámica (4 cr.)', prerreq: ['estatica', 'calcVec'] },
-        { id: 'estatica', nombre: 'Estática (4 cr.)', prerreq: ['mec1'] },
-        { id: 'matIng', nombre: 'Ingeniería de Materiales (4 cr.)' },
-        { id: 'maqelec', nombre: 'Máquinas Eléctricas (4 cr.)', prerreq: ['elecmag'] },
-        { id: 'empresa', nombre: 'Empresa y Consumidor (3 cr.)' },
-      ]},
-      { ciclo: 'Ciclo 5', cursos: [
-        { id: 'fluidos', nombre: 'Mecánica de Fluidos (4 cr.)', prerreq: ['ecdiff', 'estatica'] },
-        { id: 'matMec', nombre: 'Mecánica de Materiales (4 cr.)', prerreq: ['estatica'] },
-        { id: 'manuf', nombre: 'Procesos de Manufactura (4 cr.)', prerreq: ['matIng'] },
-        { id: 'auto', nombre: 'Automatización de Sistemas (4 cr.)', prerreq: ['maqelec'] },
-        { id: 'gob', nombre: 'Economía, Gobernanza y Poder (3 cr.)' },
-        { id: 'proy3', nombre: 'Proyectos Interdisciplinarios III (3 cr.)' },
-      ]},
-      { ciclo: 'Ciclo 6', cursos: [
-        { id: 'transfCalor', nombre: 'Transferencia de Calor (4 cr.)', prerreq: ['termo', 'fluidos'] },
-        { id: 'disElem', nombre: 'Diseño de Elementos de Máquina (4 cr.)', prerreq: ['matMec'] },
-        { id: 'minas', nombre: 'Introducción a la Ingeniería de Minas (4 cr.)' },
-        { id: 'biomec', nombre: 'Principios de Biomecánica (4 cr.)', prerreq: ['matMec'] },
-        { id: 'mantenimiento', nombre: 'Ingeniería de Mantenimiento (4 cr.)', prerreq: ['manuf'] },
-      ]},
-      { ciclo: 'Ciclo 7', cursos: [
-        { id: 'maqterm', nombre: 'Máquinas Térmicas (4 cr.)', prerreq: ['transfCalor'] },
-        { id: 'gpcontratos', nombre: 'Gestión de Proyectos y Contratos (4 cr.)', prerreq: ['empresa'] },
-        { id: 'disSistMec', nombre: 'Diseño de Sistemas Mecánicos (4 cr.)', prerreq: ['disElem'] },
-        { id: 'robotica', nombre: 'Robótica Industrial (4 cr.)', prerreq: ['auto'] },
-        { id: 'etica', nombre: 'Ética y Tecnología (3 cr.)' },
-        { id: 'finanzas', nombre: 'Finanzas Empresariales (3 cr.)', prerreq: ['gob'] },
-      ]},
-      { ciclo: 'Ciclo 8', cursos: [
-        { id: 'preprof', nombre: 'Proyecto Preprofesional (8 cr.)' },
-        { id: 'electivo1', nombre: 'Electivo de Carrera 1 (4 cr.)' },
-        { id: 'evalFin', nombre: 'Evaluación Financiera de Proyectos (3 cr.)', prerreq: ['finanzas'] },
-      ]},
-      { ciclo: 'Ciclo 9', cursos: [
-        { id: 'electivo2', nombre: 'Electivo de Carrera 2 (4 cr.)' },
-        { id: 'libre1', nombre: 'Electivo Libre 1 (4 cr.)' },
-        { id: 'libre2', nombre: 'Electivo Libre 2 (4 cr.)' },
-        { id: 'arteTec', nombre: 'Arte y Tecnología (3 cr.)' },
-        { id: 'estrategia', nombre: 'Estrategia y Organizaciones (3 cr.)' },
-        { id: 'proj1', nombre: 'Proyecto Final I (4 cr.)' },
-      ]},
-      { ciclo: 'Ciclo 10', cursos: [
-        { id: 'electivo3', nombre: 'Electivo de Carrera 3 (4 cr.)' },
-        { id: 'libre3', nombre: 'Electivo Libre 3 (4 cr.)' },
-        { id: 'libre4', nombre: 'Electivo Libre 4 (4 cr.)' },
-        { id: 'proj2', nombre: 'Trabajo de Investigación II (4 cr.)' },
-      ]}
+      { id: 'prog1', nombre: 'Programación I (4 cr.)', ciclo: 1 },
+      { id: 'calc1', nombre: 'Cálculo de una Variable (4 cr.)', ciclo: 1 },
+      { id: 'quimica', nombre: 'Química General + Lab. (4 cr.)', ciclo: 1 },
+      { id: 'introIng', nombre: 'Introducción a la Ing. Mecánica (2 cr.)', ciclo: 1 },
+      { id: 'com1', nombre: 'Lab. de Comunicación I (3 cr.)', ciclo: 1 },
+      { id: 'proy1', nombre: 'Proyectos Interdisciplinarios I (3 cr.)', ciclo: 1 },
+
+      { id: 'mecanica1', nombre: 'Introducción a la Mecánica (4 cr.)', ciclo: 2, prereq: ['calc1'] },
+      { id: 'prog2', nombre: 'Programación II (4 cr.)', ciclo: 2, prereq: ['prog1'] },
+      { id: 'calcVec', nombre: 'Cálculo Vectorial (3 cr.)', ciclo: 2, prereq: ['calc1'] },
+      { id: 'algebra', nombre: 'Álgebra Lineal (2 cr.)', ciclo: 2 },
+      { id: 'estad1', nombre: 'Estadística y Probabilidades I (4 cr.)', ciclo: 2, prereq: ['calc1'] },
+      { id: 'com2', nombre: 'Lab. de Comunicación II (3 cr.)', ciclo: 2 },
+
+      { id: 'elecmag', nombre: 'Fund. Electricidad y Magnetismo (4 cr.)', ciclo: 3, prereq: ['calcVec'] },
+      { id: 'termo', nombre: 'Termodinámica (4 cr.)', ciclo: 3, prereq: ['calcVec'] },
+      { id: 'ecdif', nombre: 'Ecuaciones Diferenciales (3 cr.)', ciclo: 3, prereq: ['calc1'] },
+      { id: 'diseno', nombre: 'Dibujo y Diseño para Ingeniería (4 cr.)', ciclo: 3 },
+      { id: 'peru', nombre: 'Temas Sociedad Contemporánea (3 cr.)', ciclo: 3 },
+      { id: 'proy2', nombre: 'Proyectos Interdisciplinarios II (3 cr.)', ciclo: 3 },
+
+      { id: 'metnum', nombre: 'Métodos Numéricos (3 cr.)', ciclo: 4, prereq: ['ecdif', 'algebra'] },
+      { id: 'dinamica', nombre: 'Dinámica (4 cr.)', ciclo: 4, prereq: ['mecanica1', 'calcVec'] },
+      { id: 'estatica', nombre: 'Estática (4 cr.)', ciclo: 4, prereq: ['mecanica1'] },
+      { id: 'materiales', nombre: 'Ing. de Materiales (4 cr.)', ciclo: 4 },
+      { id: 'maqelec', nombre: 'Máquinas Eléctricas (4 cr.)', ciclo: 4, prereq: ['elecmag'] },
+      { id: 'empresa', nombre: 'Empresa y Consumidor (3 cr.)', ciclo: 4 },
+
+      { id: 'fluidos', nombre: 'Mecánica de Fluidos (4 cr.)', ciclo: 5, prereq: ['ecdif', 'estatica'] },
+      { id: 'matmec', nombre: 'Mecánica de Materiales (4 cr.)', ciclo: 5, prereq: ['estatica'] },
+      { id: 'manuf', nombre: 'Procesos de Manufactura (4 cr.)', ciclo: 5, prereq: ['materiales'] },
+      { id: 'auto', nombre: 'Automatización de Sistemas (4 cr.)', ciclo: 5, prereq: ['maqelec'] },
+      { id: 'gob', nombre: 'Economía, Gobernanza y Poder (3 cr.)', ciclo: 5 },
+      { id: 'proy3', nombre: 'Proyectos Interdisciplinarios III (3 cr.)', ciclo: 5 },
+
+      { id: 'transfCalor', nombre: 'Transferencia de Calor (4 cr.)', ciclo: 6, prereq: ['termo', 'fluidos'] },
+      { id: 'disenoElem', nombre: 'Diseño de Elementos de Máquina (4 cr.)', ciclo: 6, prereq: ['matmec'] },
+      { id: 'minas', nombre: 'Intro. a la Ing. de Minas (4 cr.)', ciclo: 6 },
+      { id: 'biomec', nombre: 'Principios de Biomecánica (4 cr.)', ciclo: 6, prereq: ['matmec'] },
+      { id: 'mant', nombre: 'Ing. de Mantenimiento (4 cr.)', ciclo: 6, prereq: ['manuf'] },
+
+      { id: 'maqterm', nombre: 'Máquinas Térmicas (4 cr.)', ciclo: 7, prereq: ['transfCalor'] },
+      { id: 'projGest', nombre: 'Gestión de Proyectos (4 cr.)', ciclo: 7, prereq: ['empresa'] },
+      { id: 'sisMec', nombre: 'Diseño de Sistemas Mecánicos (4 cr.)', ciclo: 7, prereq: ['disenoElem'] },
+      { id: 'robotica', nombre: 'Robótica Industrial (4 cr.)', ciclo: 7, prereq: ['auto'] },
+      { id: 'etica', nombre: 'Ética y Tecnología (3 cr.)', ciclo: 7 },
+      { id: 'finanzas', nombre: 'Finanzas Empresariales (3 cr.)', ciclo: 7, prereq: ['gob'] },
+
+      { id: 'prepro', nombre: 'Proyecto Preprofesional (8 cr.)', ciclo: 8 },
+      { id: 'elec1', nombre: 'Electivo de Carrera 1 (4 cr.)', ciclo: 8 },
+      { id: 'evalfin', nombre: 'Evaluación Financiera de Proyectos (3 cr.)', ciclo: 8, prereq: ['finanzas'] },
+
+      { id: 'elec2', nombre: 'Electivo de Carrera 2 (4 cr.)', ciclo: 9 },
+      { id: 'libre1', nombre: 'Electivo Libre 1 (4 cr.)', ciclo: 9 },
+      { id: 'libre2', nombre: 'Electivo Libre 2 (4 cr.)', ciclo: 9 },
+      { id: 'arte', nombre: 'Arte y Tecnología (3 cr.)', ciclo: 9 },
+      { id: 'estrategia', nombre: 'Estrategia y Organizaciones (3 cr.)', ciclo: 9 },
+      { id: 'proyfinal1', nombre: 'Proyecto Final I (4 cr.)', ciclo: 9 },
+
+      { id: 'elec3', nombre: 'Electivo de Carrera 3 (4 cr.)', ciclo: 10 },
+      { id: 'libre3', nombre: 'Electivo Libre 3 (4 cr.)', ciclo: 10 },
+      { id: 'libre4', nombre: 'Electivo Libre 4 (4 cr.)', ciclo: 10 },
+      { id: 'proyfinal2', nombre: 'Trabajo de Investigación II (4 cr.)', ciclo: 10 },
     ];
 
-    const progreso = JSON.parse(localStorage.getItem('progresoMalla')) || {};
+    const aprobados = JSON.parse(localStorage.getItem('aprobados')) || [];
 
-    function renderMalla() {
-      const contenedor = document.getElementById('contenedor');
+    function render() {
+      const contenedor = document.getElementById('malla');
       contenedor.innerHTML = '';
 
-      cursos.forEach(ciclo => {
-        const divCiclo = document.createElement('div');
-        divCiclo.className = 'ciclo';
-        const titulo = document.createElement('h2');
-        titulo.textContent = ciclo.ciclo;
-        divCiclo.appendChild(titulo);
+      for (let ciclo = 1; ciclo <= 10; ciclo++) {
+        const col = document.createElement('div');
+        col.className = 'ciclo';
+        col.innerHTML = `<h2>Ciclo ${ciclo}</h2>`;
 
-        ciclo.cursos.forEach(curso => {
-          const divCurso = document.createElement('div');
-          divCurso.className = 'curso';
-          divCurso.textContent = curso.nombre;
+        cursos.filter(c => c.ciclo === ciclo).forEach(curso => {
+          const bloqueado = curso.prereq?.some(p => !aprobados.includes(p));
+          const div = document.createElement('div');
+          div.className = 'curso';
+          div.textContent = curso.nombre;
+          div.dataset.id = curso.id;
 
-          const completado = progreso[curso.id];
-          const prerreqs = curso.prerreq || [];
-          const faltantes = prerreqs.filter(p => !progreso[p]);
-
-          if (completado) divCurso.classList.add('aprobado');
-          if (faltantes.length > 0) {
-            divCurso.classList.add('bloqueado');
-            const tooltip = document.createElement('span');
-            tooltip.className = 'tooltip';
-            tooltip.textContent = 'Falta: ' + faltantes.map(id => cursos.flatMap(c => c.cursos).find(c => c.id === id).nombre).join(', ');
-            divCurso.appendChild(tooltip);
+          if (bloqueado) {
+            div.classList.add('bloqueado');
+            const faltantes = curso.prereq.filter(p => !aprobados.includes(p));
+            div.title = 'Requiere: ' + faltantes.map(id => cursos.find(c => c.id === id).nombre).join(', ');
           } else {
-            divCurso.addEventListener('click', () => {
-              progreso[curso.id] = !progreso[curso.id];
-              localStorage.setItem('progresoMalla', JSON.stringify(progreso));
-              renderMalla();
+            div.addEventListener('click', () => {
+              if (aprobados.includes(curso.id)) {
+                const i = aprobados.indexOf(curso.id);
+                aprobados.splice(i, 1);
+              } else {
+                aprobados.push(curso.id);
+              }
+              localStorage.setItem('aprobados', JSON.stringify(aprobados));
+              render();
             });
           }
 
-          divCiclo.appendChild(divCurso);
+          if (aprobados.includes(curso.id)) div.classList.add('aprobado');
+
+          col.appendChild(div);
         });
 
-        contenedor.appendChild(divCiclo);
-      });
+        contenedor.appendChild(col);
+      }
     }
 
-    renderMalla();
+    render();
   </script>
 </body>
 </html>
