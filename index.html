@@ -7,208 +7,199 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f8fb;
-      color: #333;
-      padding: 2rem;
+      background-color: #f5f7fa;
       margin: 0;
+      padding: 20px;
     }
     h1 {
       text-align: center;
       color: #2c3e50;
     }
     .ciclo {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      display: inline-block;
+      vertical-align: top;
+      width: 280px;
+      margin: 10px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
     }
     .ciclo h2 {
-      margin-top: 0;
-      font-size: 1.2rem;
-      background: #dfefff;
-      padding: 0.5rem;
-      border-radius: 8px;
+      font-size: 1.1rem;
+      color: #2980b9;
+      margin-bottom: 10px;
     }
     .curso {
-      margin: 0.5rem 0;
-      padding: 0.5rem;
-      border-radius: 8px;
-      transition: background 0.3s;
+      background-color: #ecf0f1;
+      margin-bottom: 8px;
+      padding: 8px;
+      border-radius: 5px;
+      cursor: pointer;
       position: relative;
     }
     .curso.aprobado {
-      background: #d4edda;
+      background-color: #2ecc71;
+      color: white;
       text-decoration: line-through;
     }
     .curso.bloqueado {
-      background: #f8d7da;
+      background-color: #bdc3c7;
+      color: #7f8c8d;
       cursor: not-allowed;
     }
     .curso:hover:not(.bloqueado) {
-      background: #d0e8ff;
-      cursor: pointer;
+      background-color: #d0e6f7;
     }
     .tooltip {
-      display: none;
-      position: absolute;
-      left: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #333;
+      visibility: hidden;
+      background-color: #34495e;
       color: #fff;
-      padding: 0.3rem 0.6rem;
+      text-align: center;
       border-radius: 6px;
-      white-space: nowrap;
-      margin-left: 8px;
-      font-size: 0.8rem;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -60px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      width: 120px;
     }
-    .curso.bloqueado:hover .tooltip {
-      display: block;
+    .curso:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Curricular - Ingeniería Mecánica (UTEC)</h1>
-  <div id="malla"></div>
+  <h1>Malla Curricular Ingeniería Mecánica - UTEC</h1>
+  <div id="contenedor"></div>
 
   <script>
-    const data = {
-      "Ciclo 1 (20 créditos)": [
-        "Programación I",
-        "Cálculo de una Variable",
-        "Química General + Lab. Química",
-        "Introducción a la Ingeniería Mecánica",
-        "Laboratorio de Comunicación I",
-        "Proyectos Interdisciplinarios I"
-      ],
-      "🔧 Ciclo 2 (20 créditos)": [
-        { nombre: "Introducción a la Mecánica", prereqs: ["Cálculo de una Variable"] },
-        { nombre: "Programación II", prereqs: ["Programación I"] },
-        { nombre: "Cálculo Vectorial", prereqs: ["Cálculo de una Variable"] },
-        "Álgebra Lineal",
-        { nombre: "Estadística y Probabilidades I", prereqs: ["Cálculo de una Variable"] },
-        "Lab. Comunicación II"
-      ],
-      "⚙️ Ciclo 3 (21 créditos)": [
-        { nombre: "Fundamentos de Electricidad y Magnetismo", prereqs: ["Cálculo Vectorial"] },
-        { nombre: "Termodinámica", prereqs: ["Cálculo Vectorial"] },
-        { nombre: "Ecuaciones Diferenciales", prereqs: ["Cálculo de una Variable"] },
-        "Dibujo y Diseño para Ingeniería",
-        "Perú: Temas de la Sociedad Contemporánea",
-        "Proyectos Interdisciplinarios II"
-      ],
-      "⚗️ Ciclo 4 (22 créditos)": [
-        { nombre: "Métodos Numéricos", prereqs: ["Ecuaciones Diferenciales", "Álgebra Lineal"] },
-        { nombre: "Dinámica", prereqs: ["Estática", "Cálculo Vectorial"] },
-        { nombre: "Estática", prereqs: ["Introducción a la Mecánica"] },
-        "Ingeniería de Materiales",
-        { nombre: "Máquinas Eléctricas", prereqs: ["Fundamentos de Electricidad y Magnetismo"] },
-        "Empresa y Consumidor"
-      ],
-      "🛠️ Ciclo 5 (22 créditos)": [
-        { nombre: "Mecánica de Fluidos", prereqs: ["Ecuaciones Diferenciales", "Estática"] },
-        { nombre: "Mecánica de Materiales", prereqs: ["Estática"] },
-        { nombre: "Procesos de Manufactura", prereqs: ["Ingeniería de Materiales"] },
-        { nombre: "Automatización de Sistemas", prereqs: ["Máquinas Eléctricas"] },
-        "Economía, Gobernanza y Relaciones de Poder",
-        "Proyectos Interdisciplinarios III"
-      ],
-      "🔥 Ciclo 6 (20 créditos)": [
-        { nombre: "Transferencia de Calor", prereqs: ["Termodinámica", "Mecánica de Fluidos"] },
-        { nombre: "Diseño de Elementos de Máquina", prereqs: ["Mecánica de Materiales"] },
-        "Introducción a la Ingeniería de Minas",
-        { nombre: "Principios de Biomecánica", prereqs: ["Mecánica de Materiales"] },
-        { nombre: "Ingeniería de Mantenimiento", prereqs: ["Procesos de Manufactura"] }
-      ],
-      "🏭 Ciclo 7 (22 créditos)": [
-        { nombre: "Máquinas Térmicas", prereqs: ["Transferencia de Calor"] },
-        { nombre: "Gestión de Proyectos y Contratos", prereqs: ["Empresa y Consumidor"] },
-        { nombre: "Diseño de Sistemas Mecánicos", prereqs: ["Diseño de Elementos de Máquina"] },
-        { nombre: "Robótica Industrial", prereqs: ["Automatización de Sistemas"] },
-        "Ética y Tecnología",
-        { nombre: "Finanzas Empresariales", prereqs: ["Economía, Gobernanza y Relaciones de Poder"] }
-      ],
-      "🎓 Ciclo 8 (15 créditos)": [
-        "Proyecto Preprofesional",
-        "Electivo de Carrera 1",
-        { nombre: "Evaluación Financiera de Proyectos", prereqs: ["Finanzas Empresariales"] }
-      ],
-      "📚 Ciclo 9 (22 créditos)": [
-        "Electivo de Carrera 2",
-        "Electivo Libre 1",
-        "Electivo Libre 2",
-        "Arte y Tecnología",
-        "Estrategia y Organizaciones",
-        "Proyecto Final I (Trabajo de Investigación)"
-      ],
-      "🛎 Ciclo 10 (16 créditos)": [
-        "Electivo de Carrera 3",
-        "Electivo Libre 3",
-        "Electivo Libre 4",
-        "Trabajo de Investigación II"
-      ]
-    };
+    const cursos = [
+      { ciclo: 'Ciclo 1', cursos: [
+        { id: 'prog1', nombre: 'Programación I (4 cr.)' },
+        { id: 'calc1', nombre: 'Cálculo de una Variable (4 cr.)' },
+        { id: 'quim', nombre: 'Química General + Lab. (4 cr.)' },
+        { id: 'introIng', nombre: 'Introducción a la Ingeniería Mecánica (2 cr.)' },
+        { id: 'com1', nombre: 'Lab. Comunicación I (3 cr.)' },
+        { id: 'proy1', nombre: 'Proyectos Interdisciplinarios I (3 cr.)' },
+      ]},
+      { ciclo: 'Ciclo 2', cursos: [
+        { id: 'mec1', nombre: 'Introducción a la Mecánica (4 cr.)', prerreq: ['calc1'] },
+        { id: 'prog2', nombre: 'Programación II (4 cr.)', prerreq: ['prog1'] },
+        { id: 'calcVec', nombre: 'Cálculo Vectorial (3 cr.)', prerreq: ['calc1'] },
+        { id: 'algebra', nombre: 'Álgebra Lineal (2 cr.)' },
+        { id: 'estad1', nombre: 'Estadística I (4 cr.)', prerreq: ['calc1'] },
+        { id: 'com2', nombre: 'Lab. Comunicación II (3 cr.)' },
+      ]},
+      { ciclo: 'Ciclo 3', cursos: [
+        { id: 'elecmag', nombre: 'Electricidad y Magnetismo (4 cr.)', prerreq: ['calcVec'] },
+        { id: 'termo', nombre: 'Termodinámica (4 cr.)', prerreq: ['calcVec'] },
+        { id: 'ecdiff', nombre: 'Ecuaciones Diferenciales (3 cr.)', prerreq: ['calc1'] },
+        { id: 'diseno', nombre: 'Dibujo y Diseño para Ingeniería (4 cr.)' },
+        { id: 'sociedad', nombre: 'Temas Sociedad Contemporánea (3 cr.)' },
+        { id: 'proy2', nombre: 'Proyectos Interdisciplinarios II (3 cr.)' },
+      ]},
+      { ciclo: 'Ciclo 4', cursos: [
+        { id: 'metnum', nombre: 'Métodos Numéricos (3 cr.)', prerreq: ['ecdiff', 'algebra'] },
+        { id: 'dinamica', nombre: 'Dinámica (4 cr.)', prerreq: ['estatica', 'calcVec'] },
+        { id: 'estatica', nombre: 'Estática (4 cr.)', prerreq: ['mec1'] },
+        { id: 'matIng', nombre: 'Ingeniería de Materiales (4 cr.)' },
+        { id: 'maqelec', nombre: 'Máquinas Eléctricas (4 cr.)', prerreq: ['elecmag'] },
+        { id: 'empresa', nombre: 'Empresa y Consumidor (3 cr.)' },
+      ]},
+      { ciclo: 'Ciclo 5', cursos: [
+        { id: 'fluidos', nombre: 'Mecánica de Fluidos (4 cr.)', prerreq: ['ecdiff', 'estatica'] },
+        { id: 'matMec', nombre: 'Mecánica de Materiales (4 cr.)', prerreq: ['estatica'] },
+        { id: 'manuf', nombre: 'Procesos de Manufactura (4 cr.)', prerreq: ['matIng'] },
+        { id: 'auto', nombre: 'Automatización de Sistemas (4 cr.)', prerreq: ['maqelec'] },
+        { id: 'gob', nombre: 'Economía, Gobernanza y Poder (3 cr.)' },
+        { id: 'proy3', nombre: 'Proyectos Interdisciplinarios III (3 cr.)' },
+      ]},
+      { ciclo: 'Ciclo 6', cursos: [
+        { id: 'transfCalor', nombre: 'Transferencia de Calor (4 cr.)', prerreq: ['termo', 'fluidos'] },
+        { id: 'disElem', nombre: 'Diseño de Elementos de Máquina (4 cr.)', prerreq: ['matMec'] },
+        { id: 'minas', nombre: 'Introducción a la Ingeniería de Minas (4 cr.)' },
+        { id: 'biomec', nombre: 'Principios de Biomecánica (4 cr.)', prerreq: ['matMec'] },
+        { id: 'mantenimiento', nombre: 'Ingeniería de Mantenimiento (4 cr.)', prerreq: ['manuf'] },
+      ]},
+      { ciclo: 'Ciclo 7', cursos: [
+        { id: 'maqterm', nombre: 'Máquinas Térmicas (4 cr.)', prerreq: ['transfCalor'] },
+        { id: 'gpcontratos', nombre: 'Gestión de Proyectos y Contratos (4 cr.)', prerreq: ['empresa'] },
+        { id: 'disSistMec', nombre: 'Diseño de Sistemas Mecánicos (4 cr.)', prerreq: ['disElem'] },
+        { id: 'robotica', nombre: 'Robótica Industrial (4 cr.)', prerreq: ['auto'] },
+        { id: 'etica', nombre: 'Ética y Tecnología (3 cr.)' },
+        { id: 'finanzas', nombre: 'Finanzas Empresariales (3 cr.)', prerreq: ['gob'] },
+      ]},
+      { ciclo: 'Ciclo 8', cursos: [
+        { id: 'preprof', nombre: 'Proyecto Preprofesional (8 cr.)' },
+        { id: 'electivo1', nombre: 'Electivo de Carrera 1 (4 cr.)' },
+        { id: 'evalFin', nombre: 'Evaluación Financiera de Proyectos (3 cr.)', prerreq: ['finanzas'] },
+      ]},
+      { ciclo: 'Ciclo 9', cursos: [
+        { id: 'electivo2', nombre: 'Electivo de Carrera 2 (4 cr.)' },
+        { id: 'libre1', nombre: 'Electivo Libre 1 (4 cr.)' },
+        { id: 'libre2', nombre: 'Electivo Libre 2 (4 cr.)' },
+        { id: 'arteTec', nombre: 'Arte y Tecnología (3 cr.)' },
+        { id: 'estrategia', nombre: 'Estrategia y Organizaciones (3 cr.)' },
+        { id: 'proj1', nombre: 'Proyecto Final I (4 cr.)' },
+      ]},
+      { ciclo: 'Ciclo 10', cursos: [
+        { id: 'electivo3', nombre: 'Electivo de Carrera 3 (4 cr.)' },
+        { id: 'libre3', nombre: 'Electivo Libre 3 (4 cr.)' },
+        { id: 'libre4', nombre: 'Electivo Libre 4 (4 cr.)' },
+        { id: 'proj2', nombre: 'Trabajo de Investigación II (4 cr.)' },
+      ]}
+    ];
 
-    const aprobadas = new Set(JSON.parse(localStorage.getItem('mecanica_utec_aprobados') || '[]'));
+    const progreso = JSON.parse(localStorage.getItem('progresoMalla')) || {};
 
-    function guardarProgreso() {
-      localStorage.setItem('mecanica_utec_aprobados', JSON.stringify([...aprobadas]));
-    }
+    function renderMalla() {
+      const contenedor = document.getElementById('contenedor');
+      contenedor.innerHTML = '';
 
-    function crearCurso(nombre, prereqs = []) {
-      const div = document.createElement('div');
-      div.className = 'curso';
-      div.textContent = nombre;
+      cursos.forEach(ciclo => {
+        const divCiclo = document.createElement('div');
+        divCiclo.className = 'ciclo';
+        const titulo = document.createElement('h2');
+        titulo.textContent = ciclo.ciclo;
+        divCiclo.appendChild(titulo);
 
-      const bloqueado = prereqs.some(req => !aprobadas.has(req));
+        ciclo.cursos.forEach(curso => {
+          const divCurso = document.createElement('div');
+          divCurso.className = 'curso';
+          divCurso.textContent = curso.nombre;
 
-      if (bloqueado) {
-        div.classList.add('bloqueado');
-        const tooltip = document.createElement('span');
-        tooltip.className = 'tooltip';
-        tooltip.textContent = `Requiere: ${prereqs.filter(req => !aprobadas.has(req)).join(', ')}`;
-        div.appendChild(tooltip);
-      } else {
-        div.addEventListener('click', () => {
-          if (aprobadas.has(nombre)) {
-            aprobadas.delete(nombre);
+          const completado = progreso[curso.id];
+          const prerreqs = curso.prerreq || [];
+          const faltantes = prerreqs.filter(p => !progreso[p]);
+
+          if (completado) divCurso.classList.add('aprobado');
+          if (faltantes.length > 0) {
+            divCurso.classList.add('bloqueado');
+            const tooltip = document.createElement('span');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = 'Falta: ' + faltantes.map(id => cursos.flatMap(c => c.cursos).find(c => c.id === id).nombre).join(', ');
+            divCurso.appendChild(tooltip);
           } else {
-            aprobadas.add(nombre);
+            divCurso.addEventListener('click', () => {
+              progreso[curso.id] = !progreso[curso.id];
+              localStorage.setItem('progresoMalla', JSON.stringify(progreso));
+              renderMalla();
+            });
           }
-          guardarProgreso();
-          render();
-        });
-      }
 
-      if (aprobadas.has(nombre)) div.classList.add('aprobado');
-
-      return div;
-    }
-
-    function render() {
-      const malla = document.getElementById('malla');
-      malla.innerHTML = '';
-      Object.entries(data).forEach(([ciclo, cursos]) => {
-        const cicloDiv = document.createElement('div');
-        cicloDiv.className = 'ciclo';
-
-        const h2 = document.createElement('h2');
-        h2.textContent = ciclo;
-        cicloDiv.appendChild(h2);
-
-        cursos.forEach(c => {
-          if (typeof c === 'string') c = { nombre: c };
-          const cursoEl = crearCurso(c.nombre, c.prereqs || []);
-          cicloDiv.appendChild(cursoEl);
+          divCiclo.appendChild(divCurso);
         });
 
-        malla.appendChild(cicloDiv);
+        contenedor.appendChild(divCiclo);
       });
     }
 
-    render();
+    renderMalla();
   </script>
 </body>
 </html>
