@@ -7,28 +7,29 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f9f9f9;
+      background: #f4f8fb;
       color: #333;
+      padding: 2rem;
       margin: 0;
-      padding: 1rem;
     }
     h1 {
       text-align: center;
-      margin-bottom: 2rem;
+      color: #2c3e50;
     }
     .ciclo {
-      border: 1px solid #ccc;
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 12px;
       padding: 1rem;
       margin-bottom: 2rem;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .ciclo h2 {
-      background: #e1effe;
+      margin-top: 0;
+      font-size: 1.2rem;
+      background: #dfefff;
       padding: 0.5rem;
       border-radius: 8px;
-      font-size: 1.1rem;
     }
     .curso {
       margin: 0.5rem 0;
@@ -74,37 +75,86 @@
 
   <script>
     const data = {
-      "Ciclo 1": [
-        "Química General y Laboratorio",
-        "Matemática I",
+      "Ciclo 1 (20 créditos)": [
+        "Programación I",
+        "Cálculo de una Variable",
+        "Química General + Lab. Química",
         "Introducción a la Ingeniería Mecánica",
         "Laboratorio de Comunicación I",
-        "Proyecto Interdisciplinario I",
-        "Inglés I"
+        "Proyectos Interdisciplinarios I"
       ],
-      "Ciclo 2": [
-        { nombre: "Introducción a la Mecánica", prereqs: ["Matemática I"] },
-        { nombre: "Programación II" },
-        { nombre: "Cálculo Vectorial", prereqs: ["Matemática I"] },
-        { nombre: "Álgebra Lineal", prereqs: ["Matemática I"] },
-        "Estadística y Probabilidades I",
-        "Laboratorio de Comunicación II",
-        "Comprehensión y Redacción II"
+      "🔧 Ciclo 2 (20 créditos)": [
+        { nombre: "Introducción a la Mecánica", prereqs: ["Cálculo de una Variable"] },
+        { nombre: "Programación II", prereqs: ["Programación I"] },
+        { nombre: "Cálculo Vectorial", prereqs: ["Cálculo de una Variable"] },
+        "Álgebra Lineal",
+        { nombre: "Estadística y Probabilidades I", prereqs: ["Cálculo de una Variable"] },
+        "Lab. Comunicación II"
       ],
-      "Ciclo 3": [
-        "Fundamentos de Electricidad y Magnetismo",
-        "Termodinámica",
-        { nombre: "Ecuaciones Diferenciales", prereqs: ["Cálculo Vectorial"] },
-        "Dibujo para Ingeniería I",
-        "Investigación académica"
+      "⚙️ Ciclo 3 (21 créditos)": [
+        { nombre: "Fundamentos de Electricidad y Magnetismo", prereqs: ["Cálculo Vectorial"] },
+        { nombre: "Termodinámica", prereqs: ["Cálculo Vectorial"] },
+        { nombre: "Ecuaciones Diferenciales", prereqs: ["Cálculo de una Variable"] },
+        "Dibujo y Diseño para Ingeniería",
+        "Perú: Temas de la Sociedad Contemporánea",
+        "Proyectos Interdisciplinarios II"
       ],
-      // Ciclos 4 a 10 se pueden seguir agregando de la misma forma...
+      "⚗️ Ciclo 4 (22 créditos)": [
+        { nombre: "Métodos Numéricos", prereqs: ["Ecuaciones Diferenciales", "Álgebra Lineal"] },
+        { nombre: "Dinámica", prereqs: ["Estática", "Cálculo Vectorial"] },
+        { nombre: "Estática", prereqs: ["Introducción a la Mecánica"] },
+        "Ingeniería de Materiales",
+        { nombre: "Máquinas Eléctricas", prereqs: ["Fundamentos de Electricidad y Magnetismo"] },
+        "Empresa y Consumidor"
+      ],
+      "🛠️ Ciclo 5 (22 créditos)": [
+        { nombre: "Mecánica de Fluidos", prereqs: ["Ecuaciones Diferenciales", "Estática"] },
+        { nombre: "Mecánica de Materiales", prereqs: ["Estática"] },
+        { nombre: "Procesos de Manufactura", prereqs: ["Ingeniería de Materiales"] },
+        { nombre: "Automatización de Sistemas", prereqs: ["Máquinas Eléctricas"] },
+        "Economía, Gobernanza y Relaciones de Poder",
+        "Proyectos Interdisciplinarios III"
+      ],
+      "🔥 Ciclo 6 (20 créditos)": [
+        { nombre: "Transferencia de Calor", prereqs: ["Termodinámica", "Mecánica de Fluidos"] },
+        { nombre: "Diseño de Elementos de Máquina", prereqs: ["Mecánica de Materiales"] },
+        "Introducción a la Ingeniería de Minas",
+        { nombre: "Principios de Biomecánica", prereqs: ["Mecánica de Materiales"] },
+        { nombre: "Ingeniería de Mantenimiento", prereqs: ["Procesos de Manufactura"] }
+      ],
+      "🏭 Ciclo 7 (22 créditos)": [
+        { nombre: "Máquinas Térmicas", prereqs: ["Transferencia de Calor"] },
+        { nombre: "Gestión de Proyectos y Contratos", prereqs: ["Empresa y Consumidor"] },
+        { nombre: "Diseño de Sistemas Mecánicos", prereqs: ["Diseño de Elementos de Máquina"] },
+        { nombre: "Robótica Industrial", prereqs: ["Automatización de Sistemas"] },
+        "Ética y Tecnología",
+        { nombre: "Finanzas Empresariales", prereqs: ["Economía, Gobernanza y Relaciones de Poder"] }
+      ],
+      "🎓 Ciclo 8 (15 créditos)": [
+        "Proyecto Preprofesional",
+        "Electivo de Carrera 1",
+        { nombre: "Evaluación Financiera de Proyectos", prereqs: ["Finanzas Empresariales"] }
+      ],
+      "📚 Ciclo 9 (22 créditos)": [
+        "Electivo de Carrera 2",
+        "Electivo Libre 1",
+        "Electivo Libre 2",
+        "Arte y Tecnología",
+        "Estrategia y Organizaciones",
+        "Proyecto Final I (Trabajo de Investigación)"
+      ],
+      "🛎 Ciclo 10 (16 créditos)": [
+        "Electivo de Carrera 3",
+        "Electivo Libre 3",
+        "Electivo Libre 4",
+        "Trabajo de Investigación II"
+      ]
     };
 
-    const aprobadas = new Set(JSON.parse(localStorage.getItem('cursos_aprobados') || '[]'));
+    const aprobadas = new Set(JSON.parse(localStorage.getItem('mecanica_utec_aprobados') || '[]'));
 
     function guardarProgreso() {
-      localStorage.setItem('cursos_aprobados', JSON.stringify([...aprobadas]));
+      localStorage.setItem('mecanica_utec_aprobados', JSON.stringify([...aprobadas]));
     }
 
     function crearCurso(nombre, prereqs = []) {
